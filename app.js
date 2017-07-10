@@ -1,3 +1,5 @@
+// if (process.env.NODE_ENV !== 'production') { require('dotenv').load() }
+
 // Express App
 const express = require('express');
 const app = express();
@@ -9,11 +11,12 @@ const cors = require('cors')
 const favicon = require('serve-favicon');
 var passport	= require('passport');
 var config      = require('./config/database');
-var User        = require('./app/models/user');
+// var User        = require('./app/models/user');
 var jwt         = require('jwt-simple');
 
 // Route Requires
 const index = require('./routes/index');
+const auth = require('./routes/auth');
 
 
 
@@ -33,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 // App Routes
+app.use('/auth', auth);
 app.use('/', index);
 
 // CORS Cross Domain
