@@ -8,26 +8,29 @@ var jwt         = require('jwt-simple');
 // require('./config/passport')(passport);
 
 
-router.post('/authenticate', function(req, res) {
-  var bodyPW = req.body.password
-  db('users').where({id: req.body.id}).then(user => {
+router.post('/login', function(req, res) {
+  var loginEmail = req.body.email
 
-    bcrypt.compare(bodyPW, user.password).then(result => {
-      var token = jwt.encode(req.body, config.secret);
-      console.log('token: ', token);
-      res.json({success: true, token: 'JWT ' + token});
-    })
-
+  db('users').where({email: loginEmail})
+  .then(user => {
+    console.log(user[0].h_pw);
+    return bcrypt.compare(req.body.password, user[0].h_pw).then(result => {
+        var token = jwt.encode(user[0], config.secret);
+        console.log('token: ', token);
+        res.json({success: true, token: 'JWT ' + token});
+      }).catch(err => {
+        console.error(err);
+      })
   })
 });
 
 
 
-/* Login */
-router.post('/login', function(req, res, next) {
-
-
-});
+// /* Login */
+// router.post('/login', function(req, res, next) {
+//
+//
+// });
 
 /* Signup */
 router.post('/signup', function(req, res, next) {
@@ -46,7 +49,7 @@ router.post('/signup', function(req, res, next) {
       .then((users) => {
         const user = users[0];
         console.log('new user created and stored: ', user);
-        // res.json({success: true, msg: 'Successful created new user.'});
+        res.json({success: true, msg: 'Successful created new user.'});
 
         // const claim = { userId: user.id };
         // const token = jwt.sign(claim, process.env.JWT_KEY, {
