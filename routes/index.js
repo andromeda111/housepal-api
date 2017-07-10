@@ -21,4 +21,23 @@ router.get('/list', function(req, res, next) {
   })
 });
 
+router.put('/list/:id', function(req, res, next) {
+  const id = req.params.id
+  const item = req.body
+  console.log('router req.body: ', item);
+  db('shopping-list-items').where({id: id}).update({buyer: item.buyer})
+  .then((updatedItem) => {
+    res.status(200).json(req.body)
+  })
+});
+
+router.delete('/list/:id', function(req, res, next) {
+  const id = req.params.id
+  console.log('router id: ', id);
+  db('shopping-list-items').where({id: id}).del().returning('*')
+  .then((thisItem) => {
+    res.status(210).json(thisItem)
+  })
+});
+
 module.exports = router;
