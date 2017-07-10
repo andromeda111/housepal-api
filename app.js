@@ -1,16 +1,21 @@
+// Express App
 const express = require('express');
+const app = express();
 const path = require('path');
-const favicon = require('serve-favicon');
+const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 const cors = require('cors')
+const favicon = require('serve-favicon');
+var passport	= require('passport');
+var config      = require('./config/database');
+var User        = require('./app/models/user');
+var jwt         = require('jwt-simple');
 
 // Route Requires
 const index = require('./routes/index');
 
-// Express App
-const app = express();
+
 
 // View Engine Setup (Handlebars)
 app.set('views', path.join(__dirname, 'views'));
@@ -24,6 +29,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+// Use the passport package in our application
+app.use(passport.initialize());
 
 // App Routes
 app.use('/', index);
