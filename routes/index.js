@@ -14,4 +14,11 @@ router.get('/data', function(req, res, next) {
   })
 });
 
+router.get('/list', function(req, res, next) {
+  db('shopping-list-items').then(result => {
+    console.log('Hitting route ', result);
+    res.json(result);
+  })
+});
+
 module.exports = router;
