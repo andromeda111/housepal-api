@@ -2,8 +2,24 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db')
 const bcrypt = require('bcrypt-as-promised');
-
+var passport	= require('passport');
+var config      = require('../config/database');
+var jwt         = require('jwt-simple');
 // require('./config/passport')(passport);
+
+
+router.post('/authenticate', function(req, res) {
+  var bodyPW = req.body.password
+  db('users').where({id: req.body.id}).then(user => {
+
+    bcrypt.compare(bodyPW, user.password).then(result => {
+      var token = jwt.encode(req.body, config.secret);
+      console.log('token: ', token);
+      res.json({success: true, token: 'JWT ' + token});
+    })
+
+  })
+});
 
 
 
@@ -15,22 +31,6 @@ router.post('/login', function(req, res, next) {
 
 /* Signup */
 router.post('/signup', function(req, res, next) {
-
-    var newUser = {
-      name: req.body.name,
-      email: req.body.email,
-      password: req.body.password
-    };
-    console.log('before bcrypt ', newUser.password);
-
-    // save the user
-    // newUser.save(function(err) {
-    //   if (err) {
-    //     return res.json({success: false, msg: 'Username already exists.'});
-    //   }
-      // res.json({success: true, msg: 'Successful created new user.'});
-    // });
-
 
     // ////////////////////
     const { name, email, password } = req.body;
@@ -46,6 +46,7 @@ router.post('/signup', function(req, res, next) {
       .then((users) => {
         const user = users[0];
         console.log('new user created and stored: ', user);
+        // res.json({success: true, msg: 'Successful created new user.'});
 
         // const claim = { userId: user.id };
         // const token = jwt.sign(claim, process.env.JWT_KEY, {
@@ -68,20 +69,5 @@ router.post('/signup', function(req, res, next) {
 
 });
 
-
-function bcryptStuff() {
-  bcrypt.genSalt(10, function(err, salt) {
-    if (err) {
-      return next(err);
-    }
-    bcrypt.hash(user.password, salt, function(err, hash) {
-      if (err) {
-        return next(err);
-      }
-      user.password = hash;
-      next();
-    });
-  });
-}
 
 module.exports = router;
