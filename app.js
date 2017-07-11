@@ -1,4 +1,4 @@
-// if (process.env.NODE_ENV !== 'production') { require('dotenv').load() }
+'use strict';
 
 // Express App
 const express = require('express');
@@ -7,18 +7,18 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
-const cors = require('cors')
+const cors = require('cors');
 const favicon = require('serve-favicon');
-var passport	= require('passport');
-var config      = require('./config/database');
-// var User        = require('./app/models/user');
-var jwt         = require('jwt-simple');
+const passport = require('passport');
+const jwt = require('jwt-simple');
+
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 // Route Requires
 const index = require('./routes/index');
 const auth = require('./routes/auth');
-
-
 
 // View Engine Setup (Handlebars)
 app.set('views', path.join(__dirname, 'views'));
@@ -26,7 +26,7 @@ app.set('view engine', 'hbs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(allowCrossDomain)
+app.use(allowCrossDomain);
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -40,15 +40,18 @@ app.use('/auth', auth);
 app.use('/', index);
 
 // CORS Cross Domain
-function allowCrossDomain (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With')
+function allowCrossDomain(req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Content-Type, Authorization, Content-Length, X-Requested-With'
+  );
 
   if ('OPTIONS' == req.method) {
-    res.sendStatus(200)
+    res.sendStatus(200);
   } else {
-    next()
+    next();
   }
 }
 

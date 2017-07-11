@@ -3,7 +3,7 @@ const router = express.Router();
 const db = require('../db')
 const jwt = require('jwt-simple')
 const config = require('../config/database');
-var passport	= require('passport');
+const passport	= require('passport');
 require('../config/passport')(passport);
 
 
@@ -49,7 +49,7 @@ router.delete('/list/:id', function(req, res, next) {
 router.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
   var token = getToken(req.headers);
   if (token) {
-    var decoded = jwt.decode(token, config.secret);
+    var decoded = jwt.decode(token, process.env.JWT_SECRET);
 
     db('users').where({id: decoded.id}).then(userData => {
       console.log(userData);
