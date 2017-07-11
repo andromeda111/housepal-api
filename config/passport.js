@@ -3,9 +3,7 @@ const ExtractJwt = require('passport-jwt').ExtractJwt;
 const db = require('../db')
 
 module.exports = function(passport) {
-  console.log('in Passport.js file');
-
-  var opts = {}
+  let opts = {}
   opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
   opts.secretOrKey = process.env.JWT_SECRET;
   passport.use(new JwtStrategy(opts, function(jwt_payload, done) {
@@ -15,6 +13,8 @@ module.exports = function(passport) {
       } else {
           done(null, false);
       }
+    }).catch(err => {
+      console.error('ERROR: ', err);
     })
 
   }));

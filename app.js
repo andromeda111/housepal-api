@@ -1,14 +1,12 @@
-'use strict';
-
 // Express App
 const express = require('express');
 const app = express();
+const favicon = require('serve-favicon');
 const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const favicon = require('serve-favicon');
 const passport = require('passport');
 const jwt = require('jwt-simple');
 

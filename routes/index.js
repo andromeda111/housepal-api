@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db')
 const jwt = require('jwt-simple')
-const config = require('../config/database');
 const passport	= require('passport');
 require('../config/passport')(passport);
 
@@ -14,7 +13,6 @@ router.get('/', function(req, res, next) {
 
 router.get('/data', function(req, res, next) {
   db('houses').then(result => {
-    console.log(result);
     res.json(result);
   })
 });
@@ -47,9 +45,9 @@ router.delete('/list/:id', function(req, res, next) {
 
 // MEMBER INFO TEST ROUTE
 router.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
-  var token = getToken(req.headers);
+  let token = getToken(req.headers);
   if (token) {
-    var decoded = jwt.decode(token, process.env.JWT_SECRET);
+    let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
     db('users').where({id: decoded.id}).then(userData => {
       console.log(userData);
@@ -68,7 +66,7 @@ router.get('/memberinfo', passport.authenticate('jwt', { session: false}), funct
 
 getToken = function (headers) {
   if (headers && headers.authorization) {
-    var parted = headers.authorization.split(' ');
+    let parted = headers.authorization.split(' ');
     if (parted.length === 2) {
       return parted[1];
     } else {
