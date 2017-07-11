@@ -17,18 +17,25 @@ router.get('/data', function(req, res, next) {
   })
 });
 
-router.get('/list', function(req, res, next) {
-  db('shopping-list-items').then(result => {
-    console.log('Hitting route ', result);
-    res.json(result);
-  })
+router.get('/list', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+  let token = getToken(req.headers);
+  if (token) {
+    let decoded = jwt.decode(token, process.env.JWT_SECRET);
+    db('shopping-list-items').where({house_id: decoded.house_id}).then(result => {
+      console.log('Hitting route ', result);
+      res.json(result);
+    })
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
 });
 
 router.put('/list/:id', function(req, res, next) {
   const id = req.params.id
-  const item = req.body
-  console.log('router req.body: ', item);
-  db('shopping-list-items').where({id: id}).update({buyer: item.buyer})
+  let buyer;
+  !req.body.buyer ? buyer = '' : buyer = req.body.buyer.name
+
+  db('shopping-list-items').where({id}).update({buyer})
   .then((updatedItem) => {
     res.status(200).json(req.body)
   })
@@ -41,6 +48,18 @@ router.delete('/list/:id', function(req, res, next) {
   .then((thisItem) => {
     res.status(210).json(thisItem)
   })
+});
+
+router.get('/users', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+  let token = getToken(req.headers);
+  if (token) {
+    let decoded = jwt.decode(token, process.env.JWT_SECRET);
+    db('users').where({house_id: decoded.house_id}).then(result => {
+      res.json(result);
+    })
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
 });
 
 // MEMBER INFO TEST ROUTE
