@@ -15,8 +15,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 // Route Requires
-const index = require('./routes/index');
-const auth = require('./routes/auth');
+const auth = require('./routes/auth')
+const index = require('./routes/index')
+const houses = require('./routes/houses')
+const users = require('./routes/users')
+const list = require('./routes/list')
 
 // View Engine Setup (Handlebars)
 app.set('views', path.join(__dirname, 'views'));
@@ -34,8 +37,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
 // App Routes
-app.use('/auth', auth);
-app.use('/', index);
+app.use('/auth', auth)
+app.use('/users', users)
+app.use('/houses', houses)
+app.use('/list', list)
+app.use('/', index)
 
 // CORS Cross Domain
 function allowCrossDomain(req, res, next) {
