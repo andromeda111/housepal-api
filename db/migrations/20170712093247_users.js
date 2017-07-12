@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     table.string('name').notNullable()
     table.string('email').notNullable()
     table.string('h_pw').notNullable()
-    table.integer('house_id').defaultTo(null)
+    table.integer('house_id').references('id').inTable('houses').defaultTo(null)
     table.timestamps(true, true)
   })
 };
