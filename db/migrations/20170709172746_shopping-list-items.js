@@ -1,5 +1,5 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable('shopping-list-items', (table) => {
+  return knex.schema.createTable('shopping_list_items', (table) => {
     table.increments()
     table.string('item').notNullable().defaultTo('')
     table.boolean('checked').notNullable().defaultTo(false)
@@ -10,5 +10,5 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTable('shopping-list-items')
+  return knex.schema.dropTable('shopping_list_items')
 };
