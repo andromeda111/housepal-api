@@ -18,21 +18,17 @@ router.post('/join', function(req, res, next) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
     db('houses').where({code: inputCode}).then(result => {
       if (!result[0]) {
-        res.status(200).send({success: false, msg: 'House does not exist'});
+        err()
+        // res.status(400).send({success: false, msg: 'House does not exist'});
       } else {
-        console.log('Successful Match');
-        console.log(result);
         let houseId = result[0].id
-        console.log('houseId: ', houseId);
-        db('users').update({house_id: houseId}).where({id: decoded.id}).returning('*').then(final => {
-          console.log('final: ', final);
-          console.log(process.env.JWT_SECRET);
-          res.status(200).send({success: true, msg: 'House successfully joined'});
+        db('users').update({house_id: houseId}).where({id: decoded.id}).returning('*').then(user => {
+          let token = jwt.encode(user[0], process.env.JWT_SECRET);
+          res.status(200).send({success: true, msg: 'House successfully joined', newToken: 'JWT ' + token});
         })
-
       }
     }).catch(err => {
-      res.status(200).send({success: false, msg: 'CATCH House does not exist'});
+      res.status(400).send({success: false, msg: 'CATCH House does not exist'});
     })
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});

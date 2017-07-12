@@ -43,17 +43,6 @@ router.post('/signup', function(req, res, next) {
 
 });
 
-/* Refresh */
-router.post('/refresh', function(req, res) {
-  let userId = req.body.id
-
-  db('users').where({id: userId})
-  .then(user => {
-    let token = jwt.encode(user[0], process.env.JWT_SECRET);
-    res.json({success: true, token: 'JWT ' + token});
-  })
-});
-
 getToken = function (headers) {
   if (headers && headers.authorization) {
     let parted = headers.authorization.split(' ');
