@@ -17,6 +17,18 @@ router.get('/', passport.authenticate('jwt', { session: false}), function(req, r
   }
 });
 
+router.get('/current', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+  let token = getToken(req.headers);
+  if (token) {
+    let decoded = jwt.decode(token, process.env.JWT_SECRET);
+    db('users').where({house_id: decoded.house_id, id: decoded.id}).then(result => {
+      res.json(result);
+    })
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+
 getToken = function (headers) {
   if (headers && headers.authorization) {
     let parted = headers.authorization.split(' ');

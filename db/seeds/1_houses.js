@@ -15,5 +15,9 @@ exports.seed = function(knex, Promise) {
           code: 'h2code'
         }
       ]);
+    }).then(() => {
+      return knex.raw(
+        "SELECT setval('houses_id_seq', (SELECT MAX(id) FROM houses));"
+      );
     });
 };
