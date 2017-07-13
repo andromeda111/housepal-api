@@ -11,9 +11,9 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'cp-server' });
 });
 
-router.get('/data', function(req, res, next) {
-  db('houses').then(result => {
-    res.json(result);
+router.get('/deleteHouse', function(req, res, next) {
+  db('houses').del().where({id: 1}).then(() => {
+    res.status(200)
   })
 });
 
