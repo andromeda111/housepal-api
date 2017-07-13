@@ -6,12 +6,7 @@ const passport	= require('passport');
 require('../config/passport')(passport);
 
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'cp-server' });
-});
-
-router.get('/deleteHouse', function(req, res, next) {
+router.get('/deleteHouse', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   db('houses').del().where({id: 1}).then(() => {
     res.status(200)
   })

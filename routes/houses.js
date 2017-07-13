@@ -6,11 +6,7 @@ const passport	= require('passport');
 require('../config/passport')(passport);
 
 
-router.get('/', function(req, res, next) {
-  res.send('success');
-});
-
-router.post('/join', function(req, res, next) {
+router.post('/join', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   const joinHouse = req.body.title
   const joinCode = req.body.code
 
@@ -36,7 +32,7 @@ router.post('/join', function(req, res, next) {
   }
 });
 
-router.post('/create', function(req, res, next) {
+router.post('/create', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   const newHouse = req.body
 
   let token = getToken(req.headers);

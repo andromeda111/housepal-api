@@ -37,7 +37,7 @@ router.post('/', passport.authenticate('jwt', { session: false}), function(req, 
 
 });
 
-router.put('/:id', function(req, res, next) {
+router.put('/:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   const id = req.params.id
   let buyer;
   !req.body.buyer ? buyer = '' : buyer = req.body.buyer.name
@@ -48,7 +48,7 @@ router.put('/:id', function(req, res, next) {
   })
 });
 
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   const id = req.params.id
   console.log('router id: ', id);
   db('shopping_list_items').where({id: id}).del().returning('*')
