@@ -6,7 +6,7 @@ const passport	= require('passport');
 require('../config/passport')(passport);
 
 
-router.get('/', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+router.get('/house', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   console.log('hitting /list');
   let token = getToken(req.headers);
   if (token) {
@@ -31,7 +31,6 @@ router.get('/', passport.authenticate('jwt', { session: false}), function(req, r
 });
 
 router.post('/new', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('router: body', req.body);
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
@@ -40,10 +39,12 @@ router.post('/new', passport.authenticate('jwt', { session: false}), function(re
     newChore.house_id = decoded.house_id
 
     db('chores').insert(newChore).returning('*').then(postedChore => {
-      console.log(postedChore);
-      db('users_chores').insert({user_id: decoded.id, chore_id: postedChore[0].id}).then(() => {
-        res.json(postedChore);
+      postedChore[0].cycle.cycleList.forEach(el => {
+        db('users_chores').insert({user_id: el, chore_id: postedChore[0].id}).then(() => {
+          next()
+        })
       })
+      res.json(postedChore);
     })
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
