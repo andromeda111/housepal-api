@@ -10,7 +10,9 @@ router.get('/', passport.authenticate('jwt', { session: false}), function(req, r
   console.log('hitting /list');
   let token = getToken(req.headers);
   if (token) {
+    console.log('token: ', token);
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
+    console.log('decoded: ', decoded);
     db('shopping_list_items').where({house_id: decoded.house_id}).then(result => {
       console.log('Hitting route ', result);
       res.json(result);

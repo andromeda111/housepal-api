@@ -29,8 +29,8 @@ exports.seed = function(knex, Promise) {
           due_Thurs: false,
           due_Fri: true,
           due_Sat: false,
-          cycle: {cycleList: [1, 2]},
-          startWith: 2,
+          cycle: {cycleList: [1, 3]},
+          startWith: 3,
           done: false,
           house_id: 1
         },
