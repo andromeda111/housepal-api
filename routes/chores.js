@@ -30,18 +30,25 @@ router.get('/', passport.authenticate('jwt', { session: false}), function(req, r
   }
 });
 
-router.get('/2', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('hitting /list');
+router.post('/new', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+  console.log('router: body', req.body);
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
-    db('shopping_list_items').where({house_id: decoded.house_id}).then(result => {
-      console.log('Hitting route ', result);
-      res.json(result);
+
+    let newChore = req.body
+    newChore.house_id = decoded.house_id
+
+    db('chores').insert(newChore).returning('*').then(postedChore => {
+      console.log(postedChore);
+      db('users_chores').insert({user_id: decoded.id, chore_id: postedChore[0].id}).then(() => {
+        res.json(postedChore);
+      })
     })
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
+
 });
 
 
