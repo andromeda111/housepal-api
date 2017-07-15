@@ -9,7 +9,10 @@ exports.seed = function(knex, Promise) {
           chore: 'Clean Kitchen Counters',
           daysDue: {daysDue: [true, false, false, false, false, false, false]},
           cycle: {cycleList: [1]},
+          currentDueDay: 'monday',
+          currentAssigned: 0,
           done: false,
+          late: false,
           house_id: 1
         },
         {
@@ -17,7 +20,10 @@ exports.seed = function(knex, Promise) {
           chore: 'Trash to curb',
           daysDue: {daysDue: [true, true, false, false, false, false, false]},
           cycle: {cycleList: [1, 3]},
+          currentDueDay: 'wednesday',
+          currentAssigned: 0,
           done: false,
+          late: false,
           house_id: 1
         },
         {
@@ -25,7 +31,10 @@ exports.seed = function(knex, Promise) {
           chore: 'Clean bathroom',
           daysDue: {daysDue: [true, true, true, false, false, false, false]},
           cycle: {cycleList: [2]},
+          currentDueDay: 'friday',
+          currentAssigned: 0,
           done: false,
+          late: false,
           house_id: 2
         }
       ]);
