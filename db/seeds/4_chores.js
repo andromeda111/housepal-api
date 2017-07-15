@@ -7,13 +7,7 @@ exports.seed = function(knex, Promise) {
         {
           id: 1,
           chore: 'Clean Kitchen Counters',
-          due_Sun: false,
-          due_Mon: false,
-          due_Tue: true,
-          due_Wed: false,
-          due_Thu: false,
-          due_Fri: false,
-          due_Sat: false,
+          daysDue: {daysDue: [true, false, false, false, false, false, false]},
           cycle: {cycleList: [1]},
           done: false,
           house_id: 1
@@ -21,13 +15,7 @@ exports.seed = function(knex, Promise) {
         {
           id: 2,
           chore: 'Trash to curb',
-          due_Sun: false,
-          due_Mon: false,
-          due_Tue: false,
-          due_Wed: false,
-          due_Thu: false,
-          due_Fri: true,
-          due_Sat: false,
+          daysDue: {daysDue: [true, true, false, false, false, false, false]},
           cycle: {cycleList: [1, 3]},
           done: false,
           house_id: 1
@@ -35,13 +23,7 @@ exports.seed = function(knex, Promise) {
         {
           id: 3,
           chore: 'Clean bathroom',
-          due_Sun: false,
-          due_Mon: false,
-          due_Tue: false,
-          due_Wed: false,
-          due_Thu: false,
-          due_Fri: false,
-          due_Sat: true,
+          daysDue: {daysDue: [true, true, true, false, false, false, false]},
           cycle: {cycleList: [2]},
           done: false,
           house_id: 2

@@ -41,7 +41,7 @@ router.post('/new', passport.authenticate('jwt', { session: false}), function(re
     db('chores').insert(newChore).returning('*').then(postedChore => {
       postedChore[0].cycle.cycleList.forEach(el => {
         db('users_chores').insert({user_id: el, chore_id: postedChore[0].id}).then(() => {
-          next()
+          console.log('posted to join');
         })
       })
       res.json(postedChore);
