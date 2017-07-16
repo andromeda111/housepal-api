@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
     table.jsonb('cycle').notNullable()
     table.jsonb('currentDueDay').notNullable()
     table.integer('currentAssigned').defaultTo(0)
+    table.boolean('dueToday').notNullable().defaultTo(false)
     table.boolean('done').notNullable().defaultTo(false)
     table.boolean('late').notNullable().defaultTo(false)
     table.integer('house_id').references('id').inTable('houses').notNullable().defaultTo(0).onDelete('CASCADE').index()

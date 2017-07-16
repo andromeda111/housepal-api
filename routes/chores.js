@@ -4,7 +4,7 @@ const db = require('../db')
 const jwt = require('jwt-simple')
 const passport	= require('passport');
 require('../config/passport')(passport);
-
+const moment = require('moment');
 
 router.get('/house', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   console.log('hitting /list');
@@ -12,19 +12,62 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
+    let allChores = []
     db('chores').where({house_id: decoded.house_id}).then(result => {
+
+
+      console.log('before');
       console.log('Hitting route ', result);
-      res.json(result);
+      // console.log('current day: ', moment().add(1, 'day'));
+      allChores = result
+        allChores.forEach(obj => {
+          console.log(obj.currentDueDay.currentDueDay);
+          if (obj.dueToday === false && obj.late === false) {
+            console.log('both false');
+            let result;
+            if (moment(moment().add(1, 'day')).isSame(moment(moment().add(1, 'day')).day(obj.currentDueDay.currentDueDay, 'day'))) {
+              console.log(moment().day(obj.currentDueDay.currentDueDay, 'day'));
+              console.log('same day');
+              obj.dueToday = true
+            }
+            if (moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.currentDueDay.currentDueDay, 'day'))) {
+              obj.dueToday = true
+              obj.late = true
+            }
+          }
+          if (obj.dueToday === true && moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.currentDueDay.currentDueDay, 'day'))) {
+            obj.late = true
+          }
+          db('chores').where({id: obj.id}).update(obj).then(() => {})
+        })
+
+        console.log('after');
+        console.log(allChores);
+
+        db('chores').where({house_id: decoded.house_id}).then(result => {
+          console.log('DONE - ready to send JSON');
+          console.log(result);
+          res.json(result)
+        })
+
+
+
+
     })
 
-    // db('chores').innerJoin('users_chores', 'chores.id', 'users_chores.chore_id').innerJoin('users', 'users.id', 'users_chores.user_id').then(collection => {
-    //   console.log(collection);
-    // })
-    //
-    // db('chores').where({house_id: decoded.house_id}).then(result => {
-    //   console.log('Hitting route ', result);
-    //   res.json(result);
-    // })
+
+
+
+
+
+
+
+
+
+
+
+
+
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }

@@ -11,6 +11,7 @@ exports.seed = function(knex, Promise) {
           cycle: {cycleList: [1]},
           currentDueDay: {null: null},
           currentAssigned: 0,
+          dueToday: false,
           done: false,
           late: false,
           house_id: 1
@@ -22,6 +23,7 @@ exports.seed = function(knex, Promise) {
           cycle: {cycleList: [1, 3]},
           currentDueDay: {null: null},
           currentAssigned: 0,
+          dueToday: false,
           done: false,
           late: false,
           house_id: 1
@@ -33,6 +35,7 @@ exports.seed = function(knex, Promise) {
           cycle: {cycleList: [2]},
           currentDueDay: {null: null},
           currentAssigned: 0,
+          dueToday: false,
           done: false,
           late: false,
           house_id: 2
