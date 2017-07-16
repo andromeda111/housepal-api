@@ -4,7 +4,7 @@ exports.up = function(knex, Promise) {
     table.string('chore').notNullable().defaultTo('')
     table.jsonb('daysDue').notNullable()
     table.jsonb('cycle').notNullable()
-    table.string('currentDueDay').defaultTo(null)
+    table.jsonb('currentDueDay').notNullable()
     table.integer('currentAssigned').defaultTo(0)
     table.boolean('done').notNullable().defaultTo(false)
     table.boolean('late').notNullable().defaultTo(false)
