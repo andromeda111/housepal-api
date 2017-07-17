@@ -22,17 +22,17 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
           if (obj.dueToday === false && obj.late === false) {
             console.log('Not due today, and not late');
             let result;
-            if (moment(moment().add(3, 'day')).isSame(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(1, 'day')).isSame(obj.currentDueDay.currentDueDay, 'day')) {
               // console.log(moment().day(obj.currentDueDay.currentDueDay, 'day'));
               console.log('same day');
               obj.dueToday = true
             }
-            if (moment(moment().add(3, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
               obj.dueToday = true
               obj.late = true
             }
           }
-          if (obj.dueToday === true && moment(moment().add(3, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+          if (obj.dueToday === true && moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
             obj.late = true
           }
           db('chores').where({id: obj.id}).update(obj).then(() => {})
