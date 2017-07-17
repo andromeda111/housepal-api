@@ -39,6 +39,11 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
                 nextDueIdx = obj.currentDueDay.currentDueIdx + 1
               }
             }
+            // If Today is after the current Due Date
+            console.log('is today after the curr due date: ', moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day'));
+            // if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            //
+            // }
 
             let nextDayDue;
             let nextDays;
@@ -66,23 +71,6 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
 
               }
             }
-
-
-            // if (moment(moment().add(1, 'day')).isSame(moment(moment().add(1, 'day')).day(obj.daysDue.daysDue[nextDueIdx], 'day'))) {
-            //   console.log('same');
-            //   obj.dueToday = true
-            // } else {
-            //   nextDays = obj.daysDue.daysDue.filter((day, idx) => {
-            //     return moment(obj.currentDueDay.currentDueDay).isBefore(moment(moment().add(1, 'day')).day(day, 'day'))
-            //   })
-            //   console.log('nextDays: ', nextDays);
-            //   if (nextDays.length > 0) {
-            //     nextDayDue = moment().add(1, 'day').day(nextDays[0], 'day')
-            //   } else {
-            //     nextDayDue = moment().add(1, 'weeks').weekday(obj.daysDue[0]);
-            //   }
-            // }
-
 
 
             obj.currentDueDay.currentDueDay = nextDayDue.format("YYYY-MM-DD")
