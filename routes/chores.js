@@ -41,18 +41,18 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
             }
             // If Today is after the current Due Date
             console.log('is today after the curr due date: ', moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day'));
-            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(8, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
 
 
 
             let nextDayDue;
             let nextDays;
             nextDays = obj.daysDue.daysDue.filter(day => {
-              console.log('day in arr', moment(moment().add(1, 'day')).day(day,'day').format('YYYY-MM-DD'));
-              let blah = moment(moment().add(1, 'day')).day(day,'day').format('YYYY-MM-DD')
+              console.log('day in arr', moment(moment().add(8, 'day')).day(day,'day').format('YYYY-MM-DD'));
+              let blah = moment(moment().add(8, 'day')).day(day,'day').format('YYYY-MM-DD')
               console.log('due date', obj.currentDueDay.currentDueDay);
-              console.log('today: ', moment(blah).isAfter(moment(moment().add(1, 'day')), 'day'));
-              if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isAfter(moment(moment().add(1, 'day')), 'day')) {
+              console.log('today: ', moment(blah).isAfter(moment(moment().add(8, 'day')), 'day'));
+              if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isAfter(moment(moment().add(8, 'day')), 'day')) {
                 return true
               }
             })
@@ -61,13 +61,13 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
 
 
             if (nextDays.length > 0) {
-              nextDayDue = moment().add(1, 'day').day(nextDays[0], 'day')
+              nextDayDue = moment().add(8, 'day').day(nextDays[0], 'day')
             } else {
-              console.log('check: ', moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.daysDue.daysDue[0], 'day')));
-              if (moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.daysDue.daysDue[0], 'day'))) {
-              nextDayDue = moment().add(1, 'weeks').weekday(obj.daysDue.daysDue[0]);
+              console.log('check: ', moment(moment().add(8, 'day')).isAfter(moment(moment().add(8, 'day')).day(obj.daysDue.daysDue[0], 'day')));
+              if (moment(moment().add(8, 'day')).isAfter(moment(moment().add(8, 'day')).day(obj.daysDue.daysDue[0], 'day'))) {
+              nextDayDue = moment(moment().add(8, 'day')).add(1, 'weeks').day(obj.daysDue.daysDue[0], 'day');
               } else {
-                nextDayDue = moment().add(1, 'day').day(obj.daysDue.daysDue[0], 'day')
+                nextDayDue = moment().add(8, 'day').day(obj.daysDue.daysDue[0], 'day')
 
               }
             }
@@ -77,55 +77,15 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
             obj.currentDueDay.currentDueIdx = nextDueIdx
 
             // If today is After the current due date:
-            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(8, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
               console.log('today is after the due date');
               } else {
                 obj.dueToday = false
               }
 
-
-
-
-            // console.log('NEXT IDX: ', nextDueIdx);
-            // // If today is After the current due date:
-            // if (moment(moment().add(5, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
-            //   console.log('today is after the due date');
-            //     // Cycle day: If the next due date is the same day as the current day
-            //     if (moment(moment().add(5, 'day')).isSame(moment(moment().add(5, 'day')).day(obj.daysDue.daysDue[nextDueIdx], 'day'))) {
-            //       console.log('same day');
-            //       obj.currentDueDay.currentDueDay = moment().add(5, 'day').day(obj.daysDue.daysDue[nextDueIdx], 'day')
-            //       obj.currentDueDay.currentDueIdx = nextDueIdx
-            //       obj.dueToday = true
-            //       console.log('new currentDueDay: ', obj.currentDueDay.currentDueDay);
-            //     } else {
-            //       obj.dueToday = false
-            //     }
-            //
-            //    // Cycle day: If the next due date is after the current day
-            //     if (obj.daysDue.daysDue.length > 0) {
-            //       obj.currentDueDay.currentDueDay = moment().add(5, 'day').day(obj.daysDue.daysDue[nextDueIdx], 'day')
-            //       obj.currentDueDay.currentDueIdx = nextDueIdx
-            //     } else {
-            //       obj.currentDueDay.currentDueDay = moment().add(1, 'weeks').day(obj.daysDue.daysDue[nextDueIdx], 'day')
-            //       obj.currentDueDay.currentDueIdx = nextDueIdx
-            //     }
-
-                // Cycle day: If the next due date is NOT the same day as the current day, AND next due day is BEFORE current day: (LATE CASE)
-                // if (moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.daysDue.daysDue[nextDueIdx], 'day')) && obj.daysDue.daysDue.length > 1) {
-                //   let laterDay = obj.daysDue.daysDue.filter((day, idx) => {
-                //     actualIdx = idx
-                //     return moment(moment().add(1, 'day')).isBefore(moment(moment().add(1, 'day')).day(day, 'day'))
-                //   })
-                //   if (laterDay.length > 0) {
-                //     actualDue = moment().add(1, 'day').day(laterDay[0], 'day')
-                //   } else {
-                //     actualDue = moment().add(1, 'weeks').weekday(daysDue.daysDue[0]);
-                //   }
-                // }
-
               obj.late = false
               obj.done = false
-            // }
+
             }
             console.log('END of DONE currentDueDay: ', obj.currentDueDay.currentDueDay);
           }
@@ -137,17 +97,17 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
           if (obj.dueToday === false && obj.late === false) {
             console.log('Not due today, and not late');
             let result;
-            if (moment(moment().add(1, 'day')).isSame(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(8, 'day')).isSame(obj.currentDueDay.currentDueDay, 'day')) {
               // console.log(moment().day(obj.currentDueDay.currentDueDay, 'day'));
               console.log('same day');
               obj.dueToday = true
             }
-            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(8, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
               obj.dueToday = true
               obj.late = true
             }
           }
-          if (obj.dueToday === true && moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+          if (obj.dueToday === true && moment(moment().add(8, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
             obj.late = true
           }
           db('chores').where({id: obj.id}).update(obj).then(() => {})
