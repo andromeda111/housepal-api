@@ -41,9 +41,9 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
             }
             // If Today is after the current Due Date
             console.log('is today after the curr due date: ', moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day'));
-            // if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
-            //
-            // }
+            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+
+
 
             let nextDayDue;
             let nextDays;
@@ -122,9 +122,11 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
                 //     actualDue = moment().add(1, 'weeks').weekday(daysDue.daysDue[0]);
                 //   }
                 // }
+
               obj.late = false
               obj.done = false
             // }
+            }
             console.log('END of DONE currentDueDay: ', obj.currentDueDay.currentDueDay);
           }
 
