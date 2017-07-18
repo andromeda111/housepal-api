@@ -21,6 +21,7 @@ const houses = require('./routes/houses')
 const users = require('./routes/users')
 const list = require('./routes/list')
 const chores = require('./routes/chores')
+const messageboard = require('./routes/messageboard')
 
 // View Engine Setup (Handlebars)
 app.set('views', path.join(__dirname, 'views'));
@@ -43,6 +44,7 @@ app.use('/users', users)
 app.use('/houses', houses)
 app.use('/list', list)
 app.use('/chores', chores)
+app.use('/messageboard', messageboard)
 app.use('/', index)
 
 // CORS Cross Domain
