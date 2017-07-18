@@ -8,6 +8,8 @@ const moment = require('moment');
 
 router.get('/house', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   console.log('hitting /list');
+
+
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
@@ -42,24 +44,24 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
             // If Today is after the current Due Date
             console.log('is today after the curr due date: ', moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day'));
 
-            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(11, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
 
               // CYLE DAYS
 
             let nextDayDue;
             let nextDays;
             nextDays = obj.daysDue.daysDue.filter(day => {
-              // console.log('day in arr', moment(moment().add(1, 'day')).day(day,'day').format('YYYY-MM-DD'));
-              let blah = moment(moment().add(1, 'day')).day(day,'day').format('YYYY-MM-DD')
-              if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isSame(moment(moment().add(1, 'day')), 'day') && !obj.late) {
+              // console.log('day in arr', moment(moment().add(11, 'day')).day(day,'day').format('YYYY-MM-DD'));
+              let blah = moment(moment().add(11, 'day')).day(day,'day').format('YYYY-MM-DD')
+              if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isSame(moment(moment().add(11, 'day')), 'day') && !obj.late) {
                 return true
-              } else if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isAfter(moment(moment().add(1, 'day')), 'day')) {
+              } else if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isAfter(moment(moment().add(11, 'day')), 'day')) {
                 return true
               }
             })
 
 
-            //   if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isSameOrAfter(moment(moment().add(1, 'day')), 'day')) {
+            //   if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isSameOrAfter(moment(moment().add(11, 'day')), 'day')) {
             //     return true
             //   }
             // })
@@ -68,13 +70,13 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
 
 
             if (nextDays.length > 0) {
-              nextDayDue = moment().add(1, 'day').day(nextDays[0], 'day')
+              nextDayDue = moment().add(11, 'day').day(nextDays[0], 'day')
             } else {
-              console.log('check: ', moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.daysDue.daysDue[0], 'day')));
-              if (moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.daysDue.daysDue[0], 'day'))) {
-              nextDayDue = moment(moment().add(1, 'day')).add(1, 'weeks').day(obj.daysDue.daysDue[0], 'day');
+              console.log('check: ', moment(moment().add(11, 'day')).isAfter(moment(moment().add(11, 'day')).day(obj.daysDue.daysDue[0], 'day')));
+              if (moment(moment().add(11, 'day')).isAfter(moment(moment().add(11, 'day')).day(obj.daysDue.daysDue[0], 'day'))) {
+              nextDayDue = moment(moment().add(11, 'day')).add(1, 'weeks').day(obj.daysDue.daysDue[0], 'day');
               } else {
-                nextDayDue = moment().add(1, 'day').day(obj.daysDue.daysDue[0], 'day')
+                nextDayDue = moment().add(11, 'day').day(obj.daysDue.daysDue[0], 'day')
 
               }
             }
@@ -84,7 +86,7 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
             obj.currentDueDay.currentDueIdx = nextDueIdx
 
             // If today is After the current due date:
-            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(11, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
               console.log('today is after the due date');
               } else {
                 obj.dueToday = false
@@ -117,7 +119,7 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
 
           // Once done is false
           console.log('Current Due Day: ', obj.currentDueDay.currentDueDay);
-          let currDay = moment().add(1, 'day').format('YYYY-MM-DD')
+          let currDay = moment().add(11, 'day').format('YYYY-MM-DD')
           if (obj.dueToday === false && obj.late === false) {
             console.log('Not due today, and not late');
             console.log(obj.currentDueDay.currentDueDay);
@@ -184,75 +186,6 @@ router.put('/done', passport.authenticate('jwt', { session: false}), function(re
 
 
 
-
-//working
-// router.get('/house', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-//   console.log('hitting /list');
-//   let token = getToken(req.headers);
-//   if (token) {
-//     let decoded = jwt.decode(token, process.env.JWT_SECRET);
-//
-//     let allChores = []
-//     db('chores').where({house_id: decoded.house_id}).then(result => {
-//
-//
-//       console.log('before');
-//       console.log('Hitting route ', result);
-//       // console.log('current day: ', moment().add(1, 'day'));
-//       allChores = result
-//         allChores.forEach(obj => {
-//           console.log(obj.currentDueDay.currentDueDay);
-//           if (obj.dueToday === false && obj.late === false) {
-//             console.log('both false');
-//             let result;
-//             if (moment(moment().add(1, 'day')).isSame(moment(moment().add(1, 'day')).day(obj.currentDueDay.currentDueDay, 'day'))) {
-//               console.log(moment().day(obj.currentDueDay.currentDueDay, 'day'));
-//               console.log('same day');
-//               obj.dueToday = true
-//             }
-//             if (moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.currentDueDay.currentDueDay, 'day'))) {
-//               obj.dueToday = true
-//               obj.late = true
-//             }
-//           }
-//           if (obj.dueToday === true && moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.currentDueDay.currentDueDay, 'day'))) {
-//             obj.late = true
-//           }
-//           db('chores').where({id: obj.id}).update(obj).then(() => {})
-//         })
-//
-//         console.log('after');
-//         console.log(allChores);
-//
-//         db('chores').where({house_id: decoded.house_id}).then(result => {
-//           console.log('DONE - ready to send JSON');
-//           console.log(result);
-//           res.json(result)
-//         })
-//
-//
-//
-//
-//     })
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//   } else {
-//     return res.status(403).send({success: false, msg: 'No token provided.'});
-//   }
-// });
-
 router.post('/new', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   let token = getToken(req.headers);
   if (token) {
@@ -269,6 +202,27 @@ router.post('/new', passport.authenticate('jwt', { session: false}), function(re
       })
       res.json(postedChore);
     })
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+
+});
+
+router.delete('/delete/:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+  console.log('hitting route');
+  console.log('body: ', req.body);
+  let token = getToken(req.headers);
+  if (token) {
+    let decoded = jwt.decode(token, process.env.JWT_SECRET);
+
+    let delChoreId = req.params.id
+    console.log(delChoreId);
+
+    db('chores').where({id: delChoreId}).del('*').returning('*').then(delChore => {
+      console.log('deleted: ', delChore);
+      res.status(200);
+      })
+
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
