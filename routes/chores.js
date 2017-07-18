@@ -41,33 +41,40 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
             }
             // If Today is after the current Due Date
             console.log('is today after the curr due date: ', moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day'));
-            if (moment(moment().add(8, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
 
+            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
 
+              // CYLE DAYS
 
             let nextDayDue;
             let nextDays;
             nextDays = obj.daysDue.daysDue.filter(day => {
-              console.log('day in arr', moment(moment().add(8, 'day')).day(day,'day').format('YYYY-MM-DD'));
-              let blah = moment(moment().add(8, 'day')).day(day,'day').format('YYYY-MM-DD')
-              console.log('due date', obj.currentDueDay.currentDueDay);
-              console.log('today: ', moment(blah).isAfter(moment(moment().add(8, 'day')), 'day'));
-              if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isAfter(moment(moment().add(8, 'day')), 'day')) {
+              // console.log('day in arr', moment(moment().add(1, 'day')).day(day,'day').format('YYYY-MM-DD'));
+              let blah = moment(moment().add(1, 'day')).day(day,'day').format('YYYY-MM-DD')
+              if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isSame(moment(moment().add(1, 'day')), 'day') && !obj.late) {
+                return true
+              } else if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isAfter(moment(moment().add(1, 'day')), 'day')) {
                 return true
               }
             })
+
+
+            //   if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isSameOrAfter(moment(moment().add(1, 'day')), 'day')) {
+            //     return true
+            //   }
+            // })
 
             console.log('nextDays after set: ', nextDays);
 
 
             if (nextDays.length > 0) {
-              nextDayDue = moment().add(8, 'day').day(nextDays[0], 'day')
+              nextDayDue = moment().add(1, 'day').day(nextDays[0], 'day')
             } else {
-              console.log('check: ', moment(moment().add(8, 'day')).isAfter(moment(moment().add(8, 'day')).day(obj.daysDue.daysDue[0], 'day')));
-              if (moment(moment().add(8, 'day')).isAfter(moment(moment().add(8, 'day')).day(obj.daysDue.daysDue[0], 'day'))) {
-              nextDayDue = moment(moment().add(8, 'day')).add(1, 'weeks').day(obj.daysDue.daysDue[0], 'day');
+              console.log('check: ', moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.daysDue.daysDue[0], 'day')));
+              if (moment(moment().add(1, 'day')).isAfter(moment(moment().add(1, 'day')).day(obj.daysDue.daysDue[0], 'day'))) {
+              nextDayDue = moment(moment().add(1, 'day')).add(1, 'weeks').day(obj.daysDue.daysDue[0], 'day');
               } else {
-                nextDayDue = moment().add(8, 'day').day(obj.daysDue.daysDue[0], 'day')
+                nextDayDue = moment().add(1, 'day').day(obj.daysDue.daysDue[0], 'day')
 
               }
             }
@@ -77,7 +84,7 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
             obj.currentDueDay.currentDueIdx = nextDueIdx
 
             // If today is After the current due date:
-            if (moment(moment().add(8, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(moment().add(1, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
               console.log('today is after the due date');
               } else {
                 obj.dueToday = false
@@ -86,6 +93,22 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
               obj.late = false
               obj.done = false
 
+              // CYCLE HOUSEMATES
+              let nextCycle = 0
+              console.log('cycle length: ', obj.cycle.cycleList.length);
+              // Get the Index of the next due day
+              if (obj.cycle.cycleList.length > 1) {
+                console.log('checking next cycle idx');
+                if (!obj.cycle.cycleList[obj.currentAssigned + 1]) {
+                  console.log('idx reset');
+                  nextCycle = 0
+                } else {
+                  console.log('idx +1');
+                  nextCycle = obj.currentAssigned + 1
+                }
+              }
+
+              obj.currentAssigned = nextCycle
             }
             console.log('END of DONE currentDueDay: ', obj.currentDueDay.currentDueDay);
           }
@@ -94,20 +117,23 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
 
           // Once done is false
           console.log('Current Due Day: ', obj.currentDueDay.currentDueDay);
+          let currDay = moment().add(1, 'day').format('YYYY-MM-DD')
           if (obj.dueToday === false && obj.late === false) {
             console.log('Not due today, and not late');
+            console.log(obj.currentDueDay.currentDueDay);
+            console.log(currDay);
             let result;
-            if (moment(moment().add(8, 'day')).isSame(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(currDay).isSame(obj.currentDueDay.currentDueDay, 'day')) {
               // console.log(moment().day(obj.currentDueDay.currentDueDay, 'day'));
               console.log('same day');
               obj.dueToday = true
             }
-            if (moment(moment().add(8, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+            if (moment(currDay).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
               obj.dueToday = true
               obj.late = true
             }
           }
-          if (obj.dueToday === true && moment(moment().add(8, 'day')).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
+          if (obj.dueToday === true && moment(currDay).isAfter(obj.currentDueDay.currentDueDay, 'day')) {
             obj.late = true
           }
           db('chores').where({id: obj.id}).update(obj).then(() => {})
