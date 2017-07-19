@@ -6,6 +6,22 @@ const passport	= require('passport');
 require('../config/passport')(passport);
 
 
+router.get('/house/:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+  let token = getToken(req.headers);
+  if (token) {
+    let decoded = jwt.decode(token, process.env.JWT_SECRET);
+
+    let houseId = req.params.id
+    db('houses').where({id: houseId}).then(result => {
+      res.json(result)
+    }).catch(() => {
+      res.status(400).send({success: false, msg: 'CATCH House does not exist, or password incorrect.'});
+    })
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+})
+
 router.post('/join', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   const joinHouse = req.body.title
   const joinCode = req.body.code
