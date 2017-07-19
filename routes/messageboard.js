@@ -44,6 +44,29 @@ router.post('/', passport.authenticate('jwt', { session: false}), function(req, 
   }
 });
 
+router.post('/system', passport.authenticate('jwt', { session: false}), function(req, res, next) {
+  console.log('hitting SYSTEM');
+  let token = getToken(req.headers);
+  if (token) {
+    let decoded = jwt.decode(token, process.env.JWT_SECRET);
+
+    let sysMsg = req.body
+    sysMsg.house_id = decoded.house_id
+
+    console.log(sysMsg);
+
+    db('message_board').insert(sysMsg).returning('*').then(result => {
+      console.log(result);
+      res.json(result)
+    }).catch(err => {
+      console.log(err);
+      res.status(400).send({success: false, msg: 'Error. Try again.', err: err});
+    })
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+
 getToken = function (headers) {
   if (headers && headers.authorization) {
     let parted = headers.authorization.split(' ');
