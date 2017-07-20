@@ -73,6 +73,9 @@ router.put('/updateDeviceToken', function(req, res, next) {
 
     db('users').update({deviceId: deviceToken}).where({id: decoded.id}).then(() => {
       res.status(200)
+    }).catch(err =>{
+      console.log(err);
+      res.status(404)
     })
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
