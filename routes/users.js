@@ -64,18 +64,15 @@ router.put('/leave/:id', passport.authenticate('jwt', { session: false}), functi
   }
 });
 
-router.put('/updateDeviceToken', function(req, res, next) {
+router.put('/updateDeviceToken', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
-    let deviceToken= req.body
+    let deviceToken = req.body.token
     console.log('dev', deviceToken);
 
     db('users').update({deviceId: deviceToken}).where({id: decoded.id}).then(() => {
       res.status(200)
-    }).catch(err =>{
-      console.log(err);
-      res.status(404)
     })
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
