@@ -9,6 +9,7 @@ exports.seed = function(knex, Promise) {
           name: 'John',
           email: 'john@john.com',
           h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
+          deviceId: 'blank1',
           house_id: 1
         },
         {
@@ -16,6 +17,7 @@ exports.seed = function(knex, Promise) {
           name: 'Ryan',
           email: '2@2.com',
           h_pw: '$2a$12$gLkiPfsf6OpZhifWe9ISI.8zICOQhy.d2QKsKDmD9jijcCHF/Da.y',
+          deviceId: 'blank2',
           house_id: 2
         },
         {
@@ -23,6 +25,7 @@ exports.seed = function(knex, Promise) {
           name: 'Cassa',
           email: 'c@c.com',
           h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
+          deviceId: 'blank3',
           house_id: 1
         }
       ]);
