@@ -8,23 +8,25 @@ exports.seed = function(knex, Promise) {
           id: 1,
           washer_status: false,
           washer_start_time: {time: null},
-          washer_current_user: null,
+          washer_current_user: {id: null, name: null},
           washer_notify: {users: null},
           dryer_status: false,
           dryer_start_time: {time: null},
-          dryer_current_user: null,
-          dryer_notify: {users: null}
+          dryer_current_user: {id: null, name: null},
+          dryer_notify: {users: null},
+          house_id: 1
         },
         {
           id: 2,
           washer_status: false,
           washer_start_time: {time: null},
-          washer_current_user: null,
+          washer_current_user: {id: null, name: null},
           washer_notify: {users: null},
           dryer_status: false,
           dryer_start_time: {time: null},
-          dryer_current_user: null,
-          dryer_notify: {users: null}
+          dryer_current_user: {id: null, name: null},
+          dryer_notify: {users: null},
+          house_id: 2
         }
       ]);
     }).then(() => {
