@@ -5,7 +5,6 @@ const jwt = require('jwt-simple')
 const passport	= require('passport');
 require('../config/passport')(passport);
 
-
 router.get('/', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   let token = getToken(req.headers);
   if (token) {
@@ -27,7 +26,6 @@ router.put('/on/:id', passport.authenticate('jwt', { session: false}), function(
     let toggleData = req.body
 
     db('laundry').where({house_id: houseId}).update(toggleData).then(result => {
-      console.log('posted toggle', result);
       res.json(result);
     })
   } else {
@@ -43,9 +41,7 @@ router.put('/notify/:id', passport.authenticate('jwt', { session: false}), funct
     let notifyId = req.params.id
     let notifyData = req.body
 
-
     db('laundry').where({house_id: houseId}).update(notifyData).then(result => {
-      console.log('posted toggle', result);
       res.json(result);
     })
   } else {

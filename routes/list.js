@@ -5,16 +5,12 @@ const jwt = require('jwt-simple')
 const passport	= require('passport');
 require('../config/passport')(passport);
 
-
 router.get('/', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('hitting /list');
   let token = getToken(req.headers);
   if (token) {
-    console.log('token: ', token);
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
-    console.log('decoded: ', decoded);
+
     db('shopping_list_items').where({house_id: decoded.house_id}).then(result => {
-      console.log('Hitting route ', result);
       res.json(result);
     })
   } else {
@@ -23,14 +19,12 @@ router.get('/', passport.authenticate('jwt', { session: false}), function(req, r
 });
 
 router.post('/', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('router: body', req.body.newItem);
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
     let newItem = {item: req.body.newItem, house_id: decoded.house_id}
     db('shopping_list_items').insert(newItem).returning('*').then(result => {
-      console.log('Hitting route ', result);
       res.json(result);
     })
   } else {
@@ -52,7 +46,7 @@ router.put('/:id', passport.authenticate('jwt', { session: false}), function(req
 
 router.delete('/:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
   const id = req.params.id
-  console.log('router id: ', id);
+
   db('shopping_list_items').where({id: id}).del().returning('*')
   .then((thisItem) => {
     res.status(210).json(thisItem)

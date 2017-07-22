@@ -69,7 +69,6 @@ router.put('/updateDeviceToken', passport.authenticate('jwt', { session: false})
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
     let deviceToken = req.body.token
-    console.log('dev', deviceToken);
 
     db('users').update({deviceId: deviceToken}).where({id: decoded.id}).then(() => {
       res.status(200)

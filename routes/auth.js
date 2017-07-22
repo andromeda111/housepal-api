@@ -40,7 +40,6 @@ router.post('/signup', function(req, res, next) {
       }).catch(err => {
         console.error('ERROR: ', err);
       })
-
 });
 
 getToken = function (headers) {

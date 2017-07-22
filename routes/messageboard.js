@@ -5,11 +5,8 @@ const jwt = require('jwt-simple')
 const passport	= require('passport');
 require('../config/passport')(passport);
 
-
 router.get('/', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('hitting /messageboard');
   let token = getToken(req.headers);
-
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
@@ -23,13 +20,11 @@ router.get('/', passport.authenticate('jwt', { session: false}), function(req, r
 });
 
 router.post('/', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('hitting messageboard router');
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
     const newMsg = {posterId: decoded.id, posterName: decoded.name, content: req.body.content, postTime: {postTime: req.body.postTime}, house_id: decoded.house_id}
-
 
     db('message_board').where({house_id: decoded.house_id}).then(allMsgs => {
       let houseMsgs = allMsgs
@@ -59,18 +54,13 @@ router.post('/', passport.authenticate('jwt', { session: false}), function(req, 
 });
 
 router.post('/system', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('hitting SYSTEM');
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
-
     let sysMsg = req.body
     sysMsg.house_id = decoded.house_id
 
-    console.log(sysMsg);
-
     db('message_board').insert(sysMsg).returning('*').then(result => {
-      console.log(result);
       res.json(result)
     }).catch(err => {
       console.log(err);

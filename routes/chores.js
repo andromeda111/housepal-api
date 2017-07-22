@@ -7,16 +7,13 @@ require('../config/passport')(passport);
 const moment = require('moment');
 
 router.get('/house', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('hitting /list');
-
-
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
     let allChores = []
     db('chores').where({house_id: decoded.house_id}).then(result => {
-      console.log('before');
+
       allChores = result
 
         allChores.forEach(obj => {
@@ -59,12 +56,6 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
                 return true
               }
             })
-
-
-            //   if (moment(blah).isAfter(obj.currentDueDay.currentDueDay, 'day') && moment(blah).isSameOrAfter(moment(moment().add(1, 'day')), 'day')) {
-            //     return true
-            //   }
-            // })
 
             console.log('nextDays after set: ', nextDays);
 
@@ -115,8 +106,6 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
             console.log('END of DONE currentDueDay: ', obj.currentDueDay.currentDueDay);
           }
 
-
-
           // Once done is false
           console.log('Current Due Day: ', obj.currentDueDay.currentDueDay);
           let currDay = moment().add(1, 'day').format('YYYY-MM-DD')
@@ -150,12 +139,7 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
           res.json(result)
         })
 
-
-
-
     })
-
-
 
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
@@ -163,7 +147,6 @@ router.get('/house', passport.authenticate('jwt', { session: false}), function(r
 });
 
 router.get('/getById/:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('hitting /list');
 
   let id = req.params.id
   let token = getToken(req.headers);
@@ -172,7 +155,6 @@ router.get('/getById/:id', passport.authenticate('jwt', { session: false}), func
 
     let chore = []
     db('chores').where({id}).then(result => {
-      console.log('router result: ', result);
       chore = result[0]
       res.json(chore)
     })
@@ -190,14 +172,11 @@ router.put('/done', passport.authenticate('jwt', { session: false}), function(re
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
     let id = req.body.id
-    console.log('id: ', id);
 
     db('chores').where({id}).update({done: true})
     .then(doneChore => {
       res.json(doneChore)
     })
-
-
 
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
@@ -209,7 +188,6 @@ router.put('/updateChore/:id', passport.authenticate('jwt', { session: false}), 
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
-
     let editedChore = req.body
     let choreId = req.params.id
 
@@ -227,7 +205,6 @@ router.put('/updateChore/:id', passport.authenticate('jwt', { session: false}), 
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
-
 });
 
 router.post('/new', passport.authenticate('jwt', { session: false}), function(req, res, next) {
@@ -241,7 +218,6 @@ router.post('/new', passport.authenticate('jwt', { session: false}), function(re
     db('chores').insert(newChore).returning('*').then(postedChore => {
       postedChore[0].cycle.cycleList.forEach(el => {
         db('users_chores').insert({user_id: el, chore_id: postedChore[0].id}).then(() => {
-          console.log('posted to join');
         })
       })
       res.json(postedChore);
@@ -253,26 +229,20 @@ router.post('/new', passport.authenticate('jwt', { session: false}), function(re
 });
 
 router.delete('/delete/:id', passport.authenticate('jwt', { session: false}), function(req, res, next) {
-  console.log('hitting route');
-  console.log('body: ', req.body);
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
     let delChoreId = req.params.id
-    console.log(delChoreId);
 
     db('chores').where({id: delChoreId}).del('*').returning('*').then(delChore => {
-      console.log('deleted: ', delChore);
       res.status(200);
       })
 
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
-
 });
-
 
 getToken = function (headers) {
   if (headers && headers.authorization) {

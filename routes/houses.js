@@ -10,8 +10,8 @@ router.get('/house/:id', passport.authenticate('jwt', { session: false}), functi
   let token = getToken(req.headers);
   if (token) {
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
-
     let houseId = req.params.id
+
     db('houses').where({id: houseId}).then(result => {
       res.json(result)
     }).catch(() => {
@@ -32,11 +32,10 @@ router.post('/join', passport.authenticate('jwt', { session: false}), function(r
     db('houses').where({title: joinHouse, code: joinCode}).then(result => {
       if (!result[0]) {
         err()
-        // res.status(400).send({success: false, msg: 'House does not exist'});
       } else {
         let houseId = result[0].id
         db('users').update({house_id: houseId}).where({id: decoded.id}).returning('*').then(user => {
-          let token = jwt.encode(user[0], process.env.JWT_SECRET);
+          token = jwt.encode(user[0], process.env.JWT_SECRET);
           res.status(200).send({success: true, msg: 'House successfully joined', newToken: 'JWT ' + token});
         })
       }

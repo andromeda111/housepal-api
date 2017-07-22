@@ -19,7 +19,6 @@ router.get('/memberinfo', passport.authenticate('jwt', { session: false}), funct
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
 
     db('users').where({id: decoded.id}).then(userData => {
-      console.log(userData);
       if (!userData) {
         return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
       } else {
