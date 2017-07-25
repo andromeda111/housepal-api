@@ -36,11 +36,11 @@ router.post('/join', passport.authenticate('jwt', { session: false}), function(r
         let houseId = result[0].id
         db('users').update({house_id: houseId}).where({id: decoded.id}).returning('*').then(user => {
           token = jwt.encode(user[0], process.env.JWT_SECRET);
-          res.status(200).send({success: true, msg: 'House successfully joined', newToken: 'JWT ' + token});
+          res.status(200).send({success: true, msg: 'House successfully joined.', newToken: 'JWT ' + token});
         })
       }
     }).catch(() => {
-      res.status(400).send({success: false, msg: 'CATCH House does not exist, or password incorrect.'});
+      res.status(400).send({success: false, msg: 'Try again; house does not exist.'});
     })
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
@@ -55,12 +55,26 @@ router.post('/create', passport.authenticate('jwt', { session: false}), function
     let decoded = jwt.decode(token, process.env.JWT_SECRET);
     db('houses').insert(newHouse).returning('*').then(result => {
       let houseId = result[0].id
-      db('users').update({house_id: houseId}).where({id: decoded.id}).returning('*').then(user => {
-        let token = jwt.encode(user[0], process.env.JWT_SECRET);
-        res.status(200).send({success: true, msg: 'House successfully created', newToken: 'JWT ' + token});
+      let newLaundry = {
+        washer_status: false,
+        washer_start_time: {time: null},
+        washer_current_user: {id: null, name: null},
+        washer_notify: {users: null},
+        dryer_status: false,
+        dryer_start_time: {time: null},
+        dryer_current_user: {id: null, name: null},
+        dryer_notify: {users: null},
+        house_id: houseId
+      }
+      db('laundry').insert(newLaundry).returning('*').then(result => {
+        console.log('New laundry created.');
+        db('users').update({house_id: houseId}).where({id: decoded.id}).returning('*').then(user => {
+          let token = jwt.encode(user[0], process.env.JWT_SECRET);
+          res.status(200).send({success: true, msg: 'House successfully created.', newToken: 'JWT ' + token});
+        })
       })
     }).catch(err => {
-      res.status(400).send({success: false, msg: 'Error, house already exists. Try again.', err: err});
+      res.status(400).send({success: false, msg: 'Try again; house already exists.', err: err});
     })
   } else {
     return res.status(403).send({success: false, msg: 'No token provided.'});
