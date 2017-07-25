@@ -6,13 +6,13 @@ exports.seed = function(knex, Promise) {
       return knex('users_chores').insert([
         {
           id: 1,
-          user_id: 1,
+          user_id: 2,
           chore_id: 1
         },
         {
           id: 2,
-          user_id: 1,
-          chore_id: 2
+          user_id: 3,
+          chore_id: 1
         },
         {
           id: 3,
@@ -21,7 +21,17 @@ exports.seed = function(knex, Promise) {
         },
         {
           id: 4,
+          user_id: 4,
+          chore_id: 2
+        },
+        {
+          id: 5,
           user_id: 2,
+          chore_id: 3
+        },
+        {
+          id: 6,
+          user_id: 4,
           chore_id: 3
         }
       ]);

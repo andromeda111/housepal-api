@@ -6,32 +6,25 @@ exports.seed = function(knex, Promise) {
       return knex('shopping_list_items').insert([
         {
           id: 1,
-          item: 'Dishwasher Soap (1)',
+          item: 'Dishwasher Soap',
           checked: false,
-          buyer: 'John',
+          buyer: 'Lindsey',
           house_id: 1
         },
         {
           id: 2,
-          item: 'Trash Bags (1)',
+          item: 'Trash Bags',
           checked: false,
-          buyer: 'John',
+          buyer: '',
           house_id: 1
         },
         {
           id: 3,
-          item: 'Coffee Beans (2)',
+          item: 'Coffee Filters',
           checked: false,
           buyer: 'Ryan',
-          house_id: 2
-        },
-        {
-          id: 4,
-          item: 'Coffee Filters (2)',
-          checked: false,
-          buyer: '',
-          house_id: 2
-        },
+          house_id: 1
+        }
       ]);
     }).then(() => {
       return knex.raw(

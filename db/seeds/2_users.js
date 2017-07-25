@@ -10,15 +10,15 @@ exports.seed = function(knex, Promise) {
           email: 'john@john.com',
           h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
           deviceId: 'blank1',
-          house_id: 1
+          house_id: 2
         },
         {
           id: 2,
           name: 'Ryan',
-          email: '2@2.com',
-          h_pw: '$2a$12$gLkiPfsf6OpZhifWe9ISI.8zICOQhy.d2QKsKDmD9jijcCHF/Da.y',
+          email: 'ryan@ryan.com',
+          h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
           deviceId: 'blank2',
-          house_id: 2
+          house_id: 1
         },
         {
           id: 3,
@@ -26,6 +26,22 @@ exports.seed = function(knex, Promise) {
           email: 'c@c.com',
           h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
           deviceId: 'blank3',
+          house_id: 1
+        },
+        {
+          id: 4,
+          name: 'Lindsey',
+          email: 'lindsey@lindsey.com',
+          h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
+          deviceId: 'blank4',
+          house_id: 1
+        },
+        {
+          id: 5,
+          name: 'David',
+          email: 'david@david.com',
+          h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
+          deviceId: 'blank5',
           house_id: 1
         }
       ]);

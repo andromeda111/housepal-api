@@ -6,12 +6,12 @@ exports.seed = function(knex, Promise) {
       return knex('chores').insert([
         {
           id: 1,
-          chore: 'Clean Kitchen Counters',
-          daysDue: {daysDue: [true, false, false, false, false, false, false]},
-          cycle: {cycleList: [1]},
-          currentDueDay: {null: null, actualIdx: 0},
+          chore: 'Clean Kitchen Counters, Sink',
+          daysDue: {daysDue: [0, 2]},
+          cycle: {cycleList: [4]},
+          currentDueDay: {currentDueDay: "2017-07-25", currentDueIdx: 0},
           currentAssigned: 0,
-          dueToday: false,
+          dueToday: true,
           done: false,
           late: false,
           house_id: 1
@@ -19,26 +19,26 @@ exports.seed = function(knex, Promise) {
         {
           id: 2,
           chore: 'Trash to curb',
-          daysDue: {daysDue: [true, true, false, false, false, false, false]},
-          cycle: {cycleList: [1, 3]},
-          currentDueDay: {null: null, actualIdx: 0},
+          daysDue: {daysDue: [4]},
+          cycle: {cycleList: [3, 4]},
+          currentDueDay: {currentDueDay: "2017-07-27", currentDueIdx: 0},
           currentAssigned: 0,
           dueToday: false,
-          done: false,
+          done: true,
           late: false,
           house_id: 1
         },
         {
           id: 3,
           chore: 'Clean bathroom',
-          daysDue: {daysDue: [true, true, true, false, false, false, false]},
-          cycle: {cycleList: [2]},
-          currentDueDay: {null: null, actualIdx: 0},
+          daysDue: {daysDue: [0, 4]},
+          cycle: {cycleList: [2, 4]},
+          currentDueDay: {currentDueDay: "2017-07-23", currentDueIdx: 0},
           currentAssigned: 0,
-          dueToday: false,
+          dueToday: true,
           done: false,
-          late: false,
-          house_id: 2
+          late: true,
+          house_id: 1
         }
       ]);
     }).then(() => {
