@@ -16,7 +16,7 @@ exports.seed = function(knex, Promise) {
           id: 2,
           name: 'Ryan',
           email: 'ryan@ryan.com',
-          h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
+          h_pw: '$2a$12$P38wkHnIwx9LDuyL4TYMFeLjDEbruZ6QQrsswIjqnpS.eZ.eGiOse',
           deviceId: 'blank2',
           house_id: 1
         },
@@ -24,7 +24,7 @@ exports.seed = function(knex, Promise) {
           id: 3,
           name: 'Cassa',
           email: 'c@c.com',
-          h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
+          h_pw: '$2a$12$P38wkHnIwx9LDuyL4TYMFeLjDEbruZ6QQrsswIjqnpS.eZ.eGiOse',
           deviceId: 'blank3',
           house_id: 1
         },
@@ -32,7 +32,7 @@ exports.seed = function(knex, Promise) {
           id: 4,
           name: 'Lindsey',
           email: 'lindsey@lindsey.com',
-          h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
+          h_pw: '$2a$12$P38wkHnIwx9LDuyL4TYMFeLjDEbruZ6QQrsswIjqnpS.eZ.eGiOse',
           deviceId: 'blank4',
           house_id: 1
         },
@@ -40,7 +40,7 @@ exports.seed = function(knex, Promise) {
           id: 5,
           name: 'David',
           email: 'david@david.com',
-          h_pw: '$2a$12$Prg9z3l7/owKTEGIeoPUvuyMLstsawt8Py4VWGFJ8ZhcY8o2YXni.',
+          h_pw: '$2a$12$P38wkHnIwx9LDuyL4TYMFeLjDEbruZ6QQrsswIjqnpS.eZ.eGiOse',
           deviceId: 'blank5',
           house_id: 1
         }
