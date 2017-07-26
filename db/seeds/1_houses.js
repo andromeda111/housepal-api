@@ -7,7 +7,7 @@ exports.seed = function(knex, Promise) {
         {
           id: 1,
           title: 'Tanglemansion',
-          code: 'h1code'
+          code: 'icecream'
         },
         {
           id: 2,
