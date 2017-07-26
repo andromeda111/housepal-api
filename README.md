@@ -1,1 +1,3 @@
-Server for capstone project - in development.
+HousePal API
+
+-Readme under construction
