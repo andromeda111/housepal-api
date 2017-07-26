@@ -7,9 +7,9 @@ exports.seed = function(knex, Promise) {
         {
           id: 1,
           chore: 'Clean Kitchen Counters, Sink',
-          daysDue: {daysDue: [0, 2]},
+          daysDue: {daysDue: [0, 3]},
           cycle: {cycleList: [4]},
-          currentDueDay: {currentDueDay: "2017-07-25", currentDueIdx: 0},
+          currentDueDay: {currentDueDay: "2017-07-26", currentDueIdx: 1},
           currentAssigned: 0,
           dueToday: true,
           done: false,
@@ -19,9 +19,9 @@ exports.seed = function(knex, Promise) {
         {
           id: 2,
           chore: 'Trash to curb',
-          daysDue: {daysDue: [4]},
+          daysDue: {daysDue: [5]},
           cycle: {cycleList: [3, 4]},
-          currentDueDay: {currentDueDay: "2017-07-27", currentDueIdx: 0},
+          currentDueDay: {currentDueDay: "2017-07-28", currentDueIdx: 0},
           currentAssigned: 0,
           dueToday: false,
           done: true,
